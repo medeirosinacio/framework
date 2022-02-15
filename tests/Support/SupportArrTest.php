@@ -22,7 +22,7 @@ class SupportArrTest extends TestCase
         $this->assertFalse(Arr::accessible(null));
         $this->assertFalse(Arr::accessible('abc'));
         $this->assertFalse(Arr::accessible(new stdClass));
-        $this->assertFalse(Arr::accessible((object) ['a' => 1, 'b' => 2]));
+        $this->assertFalse(Arr::accessible((object)['a' => 1, 'b' => 2]));
     }
 
     public function testAdd()
@@ -66,10 +66,18 @@ class SupportArrTest extends TestCase
         // 3D matrix
         $this->assertSame(
             [
-                [1, 'a', 'I'], [1, 'a', 'II'], [1, 'a', 'III'],
-                [1, 'b', 'I'], [1, 'b', 'II'], [1, 'b', 'III'],
-                [2, 'a', 'I'], [2, 'a', 'II'], [2, 'a', 'III'],
-                [2, 'b', 'I'], [2, 'b', 'II'], [2, 'b', 'III'],
+                [1, 'a', 'I'],
+                [1, 'a', 'II'],
+                [1, 'a', 'III'],
+                [1, 'b', 'I'],
+                [1, 'b', 'II'],
+                [1, 'b', 'III'],
+                [2, 'a', 'I'],
+                [2, 'a', 'II'],
+                [2, 'a', 'III'],
+                [2, 'b', 'I'],
+                [2, 'b', 'II'],
+                [2, 'b', 'III'],
             ],
             Arr::crossJoin([1, 2], ['a', 'b'], ['I', 'II', 'III'])
         );
@@ -145,7 +153,8 @@ class SupportArrTest extends TestCase
 
         $array = ['name' => 'taylor', 'framework' => ['language' => 'PHP', 'name' => 'Laravel']];
         $this->assertEquals(['name' => 'taylor'], Arr::except($array, 'framework'));
-        $this->assertEquals(['name' => 'taylor', 'framework' => ['name' => 'Laravel']], Arr::except($array, 'framework.language'));
+        $this->assertEquals(['name' => 'taylor', 'framework' => ['name' => 'Laravel']],
+            Arr::except($array, 'framework.language'));
         $this->assertEquals(['framework' => ['language' => 'PHP']], Arr::except($array, ['name', 'framework.name']));
     }
 
@@ -484,7 +493,8 @@ class SupportArrTest extends TestCase
             'post-1' => [
                 'comments' => [
                     'tags' => [
-                        '#foo', '#bar',
+                        '#foo',
+                        '#bar',
                     ],
                 ],
             ],
@@ -500,7 +510,8 @@ class SupportArrTest extends TestCase
         $this->assertEquals([
             0 => [
                 'tags' => [
-                    '#foo', '#bar',
+                    '#foo',
+                    '#bar',
                 ],
             ],
             1 => [
@@ -566,7 +577,7 @@ class SupportArrTest extends TestCase
 
     public function testArrayPluckWithArrayAndObjectValues()
     {
-        $array = [(object) ['name' => 'taylor', 'email' => 'foo'], ['name' => 'dayle', 'email' => 'bar']];
+        $array = [(object)['name' => 'taylor', 'email' => 'foo'], ['name' => 'dayle', 'email' => 'bar']];
         $this->assertEquals(['taylor', 'dayle'], Arr::pluck($array, 'name'));
         $this->assertEquals(['taylor' => 'foo', 'dayle' => 'bar'], Arr::pluck($array, 'email', 'name'));
     }
@@ -599,7 +610,8 @@ class SupportArrTest extends TestCase
         ];
 
         $this->assertEquals([['taylor'], ['abigail', 'dayle']], Arr::pluck($array, 'users.*.first'));
-        $this->assertEquals(['a' => ['taylor'], 'b' => ['abigail', 'dayle']], Arr::pluck($array, 'users.*.first', 'account'));
+        $this->assertEquals(['a' => ['taylor'], 'b' => ['abigail', 'dayle']],
+            Arr::pluck($array, 'users.*.first', 'account'));
         $this->assertEquals([['taylorotwell@gmail.com'], [null, null]], Arr::pluck($array, 'users.*.email'));
     }
 
@@ -972,10 +984,10 @@ class SupportArrTest extends TestCase
     public function testSortByMany()
     {
         $unsorted = [
-            ['name' => 'John', 'age' => 8,  'meta' => ['key' => 3]],
+            ['name' => 'John', 'age' => 8, 'meta' => ['key' => 3]],
             ['name' => 'John', 'age' => 10, 'meta' => ['key' => 5]],
             ['name' => 'Dave', 'age' => 10, 'meta' => ['key' => 3]],
-            ['name' => 'John', 'age' => 8,  'meta' => ['key' => 2]],
+            ['name' => 'John', 'age' => 8, 'meta' => ['key' => 2]],
         ];
 
         // sort using keys
@@ -986,8 +998,8 @@ class SupportArrTest extends TestCase
         ]));
         $this->assertEquals([
             ['name' => 'Dave', 'age' => 10, 'meta' => ['key' => 3]],
-            ['name' => 'John', 'age' => 8,  'meta' => ['key' => 2]],
-            ['name' => 'John', 'age' => 8,  'meta' => ['key' => 3]],
+            ['name' => 'John', 'age' => 8, 'meta' => ['key' => 2]],
+            ['name' => 'John', 'age' => 8, 'meta' => ['key' => 3]],
             ['name' => 'John', 'age' => 10, 'meta' => ['key' => 5]],
         ], $sorted);
 
@@ -1000,8 +1012,8 @@ class SupportArrTest extends TestCase
         $this->assertEquals([
             ['name' => 'Dave', 'age' => 10, 'meta' => ['key' => 3]],
             ['name' => 'John', 'age' => 10, 'meta' => ['key' => 5]],
-            ['name' => 'John', 'age' => 8,  'meta' => ['key' => 2]],
-            ['name' => 'John', 'age' => 8,  'meta' => ['key' => 3]],
+            ['name' => 'John', 'age' => 8, 'meta' => ['key' => 2]],
+            ['name' => 'John', 'age' => 8, 'meta' => ['key' => 3]],
         ], $sortedWithOrder);
 
         // sort using callable
@@ -1017,8 +1029,23 @@ class SupportArrTest extends TestCase
         $this->assertEquals([
             ['name' => 'Dave', 'age' => 10, 'meta' => ['key' => 3]],
             ['name' => 'John', 'age' => 10, 'meta' => ['key' => 5]],
-            ['name' => 'John', 'age' => 8,  'meta' => ['key' => 2]],
-            ['name' => 'John', 'age' => 8,  'meta' => ['key' => 3]],
+            ['name' => 'John', 'age' => 8, 'meta' => ['key' => 2]],
+            ['name' => 'John', 'age' => 8, 'meta' => ['key' => 3]],
         ], $sortedWithCallable);
+    }
+
+    public function testIndex()
+    {
+        $array = [
+            ['id' => '123', 'data' => 'abc'],
+            ['id' => '345', 'data' => 'def'],
+            ['id' => '498', 'data' => 'hgi'],
+        ];
+
+        $this->assertEquals([
+            '123' => ['id' => '123', 'data' => 'abc'],
+            '345' => ['id' => '345', 'data' => 'hgi'],
+            '498' => ['id' => '498', 'data' => 'hgi'],
+        ], Arr::index($array, 'id'));
     }
 }
